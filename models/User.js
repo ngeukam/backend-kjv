@@ -17,6 +17,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    default: 'reader',
+  },
+  created_at: {
+    type: Date,
+    default: Date.now, // Ajoute la date de création par défaut
+  }
 });
 
 // Hash the password before saving the user

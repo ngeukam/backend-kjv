@@ -4,8 +4,10 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const authRoutes = require("./routes/auth");
 const blsRoutes = require("./routes/bls");
+const eventRoutes = require("./routes/event");
+const prayerRoutes = require("./routes/prayer");
+const newblsRoutes = require("./routes/blsn");
 require("dotenv").config();
-
 //SSL
 /*const https = require("https");
 const fs = require("fs");*/
@@ -27,10 +29,16 @@ mongoose
 	.then(() => console.log("MongoDB connected"))
 	.catch((err) => console.log(err));
 
-// Use authentication routes
+// authentication routes
 app.use("/api/auth", authRoutes);
-// Use bls routes
+// bls routes
 app.use("/api/bls", blsRoutes);
+// new bls routes
+app.use("/api/newbls", newblsRoutes);
+// event routes
+app.use("/api/event", eventRoutes);
+// prayer routes
+app.use("/api/prayer", prayerRoutes);
 // SSL options
 /*const ssl_options = {
   key: fs.readFileSync('/etc/letsencrypt/live/vmi1929509.contaboserver.net/privkey.pem'),

@@ -51,7 +51,7 @@ router.post("/login", async (req, res) => {
 			}
 		}
 		// Generate JWT
-		const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
+		const token = jwt.sign({ userId: user._id,  role: user.role }, JWT_SECRET, {
 			expiresIn: "1h",
 		}); // Token expires in 1 hour
 		res.json({ token });
@@ -61,21 +61,5 @@ router.post("/login", async (req, res) => {
 	}
 });
 
-// Middleware to verify token
-const verifyToken = (req, res, next) => {
-	const token = req.header("Authorization");
-	if (!token) return res.status(401).json({ message: "Access denied." });
-
-	jwt.verify(token.split(" ")[1], JWT_SECRET, (err, decoded) => {
-		if (err) return res.status(403).json({ message: "Invalid token." });
-		req.userId = decoded.userId;
-		next();
-	});
-};
-
-// Example of a protected route
-router.get("/protected", verifyToken, (req, res) => {
-	res.json({ message: "Protected data", userId: req.userId });
-});
 
 module.exports = router;

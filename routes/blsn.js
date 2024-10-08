@@ -1,9 +1,8 @@
 const express = require("express");
-const Bls = require("../models/Bls");
+const newBls = require("../models/Blsn");
 const router = express.Router();
 const adminMiddleware = require('../middleware/adminMiddleware');
 const verifyToken = require ('../middleware/verifyToken');
-
 // create bls
 router.post("/create-verse",adminMiddleware, async (req, res) => {
 	const { book, chapter, verse, text } = req.body;
@@ -17,13 +16,13 @@ router.post("/create-verse",adminMiddleware, async (req, res) => {
 
 	try {
 		// Check if verse already exists in the book and chapter
-		const existingBls = await Bls.findOne({ book, chapter, verse });
+		const existingBls = await newBls.findOne({ book, chapter, verse });
 		if (existingBls) {
 			return res.status(400).json({ message: "This verse already exists." });
 		}
 
 		// Create a new Bls entry
-		const newVerse = new Bls({ book, chapter, verse, text });
+		const newVerse = new newBls({ book, chapter, verse, text });
 		await newVerse.save();
 
 		res.status(201).json({ message: "Verse added successfully." });
@@ -46,7 +45,7 @@ router.get("/retrieve-verse",verifyToken, async (req, res) => {
     if (verse) query.verse = verse;
 
     // Find all verses matching the query, exclude _id and __v fields
-    const foundVerses = await Bls.find(query).select("-__v");
+    const foundVerses = await newBls.find(query).select("-__v");
 
     if (foundVerses.length === 0) {
       return res.status(404).json({ message: "No verses found." });
@@ -66,13 +65,13 @@ router.delete("/delete-verse/:id",adminMiddleware, async (req, res) => {
 
     try {
         // Vérifiez si le verset existe
-        const verseToDelete = await Bls.findById(id);
+        const verseToDelete = await newBls.findById(id);
         if (!verseToDelete) {
             return res.status(404).json({ message: "No verses found." });
         }
 
         // Supprimez le verset
-        await Bls.findByIdAndDelete(id);
+        await newBls.findByIdAndDelete(id);
 
         res.status(200).json({ message: "Verse successfully deleted." });
     } catch (error) {
@@ -88,7 +87,7 @@ router.put("/update-verse/:id",adminMiddleware, async (req, res) => {
 
     try {
         // Check if the verse exists
-        const existingVerse = await Bls.findById(id);
+        const existingVerse = await newBls.findById(id);
         if (!existingVerse) {
             return res.status(404).json({ message: "Verse not found." });
         }
