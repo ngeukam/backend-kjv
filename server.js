@@ -7,6 +7,7 @@ const blsRoutes = require("./routes/bls");
 const eventRoutes = require("./routes/event");
 const prayerRoutes = require("./routes/prayer");
 const newblsRoutes = require("./routes/blsn");
+const fromRoutes = require("./routes/form");
 require("dotenv").config();
 //SSL
 /*const https = require("https");
@@ -39,6 +40,8 @@ app.use("/api/newbls", newblsRoutes);
 app.use("/api/event", eventRoutes);
 // prayer routes
 app.use("/api/prayer", prayerRoutes);
+// form
+app.use("/api/form", fromRoutes);
 // SSL options
 /*const ssl_options = {
   key: fs.readFileSync('/etc/letsencrypt/live/vmi1929509.contaboserver.net/privkey.pem'),

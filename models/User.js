@@ -1,7 +1,8 @@
 // models/User.js
 
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -28,7 +29,7 @@ const userSchema = new mongoose.Schema({
 });
 
 // Hash the password before saving the user
-userSchema.pre('save', async function (next) {
+/*userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   
   // Generate salt and hash the password
@@ -40,7 +41,7 @@ userSchema.pre('save', async function (next) {
 // Method to compare passwords
 userSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
-};
+};*/
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
